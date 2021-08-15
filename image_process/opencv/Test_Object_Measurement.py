@@ -1,14 +1,13 @@
 import cv2
-import numpy as np
 
-#注意无法import其他文件，则需要将当前目录设置为Sources Root
+#针对PyCharm：注意如果无法import其他py文件，则需要将当前目录设置为Sources Root
 import contourutil
 
 ######################################################################################
 #完全按照https://github.com/murtazahassan/Real-Time-Object-Measurement.git实现
 ######################################################################################
 
-#设置关闭摄像机
+#设置是否打开摄像机
 webcam = False
 
 #定义使用图片路径（绝对路径或相对路径）
