@@ -68,17 +68,44 @@ def getContours(img, cThr=[100, 100], showCanny=False, minArea=1000, filter=0, d
     return img, finalContours
 
 # 获取矩形轮廓的顶点
+#     ^
+#     |    (a)*-------*(b)
+#     |      /       /
+#     |  (c)*-------*(d)
+#------------------------------->
+#     |
+# 简单示意：a，b，c，d为四边形的顶点，每个顶点由（x,y）二维坐标表示；则 x+y 值最大的为b；x+y值最小的为c，y-x值最大的为a，y-x值最小的为d
 def recorder(myPoints):
     # 构造一个矩阵myPointsNew，其维度与矩阵myPoints一致，并为其初始化为全0
     myPointsNew = np.zeros_like(myPoints)
     # reshape改变矩阵结构，并且原始数据不发生变化
-    #
+    print('原始myPoint:' + str(myPoints))
     myPoints = myPoints.reshape((4, 2))
-
+    print("处理myPoints：" + str(myPoints))
+    # 二维数组myPoints，代码myPoints.sum(axis=0)指定对数组myPoints对每列求和，myPoints.sum(axis=1)是对每行求和，返回的都是一维数组（维度降了一维）
+    # axis=0：在第一维操作
+    # axis=1：在第二维操作
+    # axis=-1：在最后一维操作
+    # x = [[a11,a12,a13,a14],[a21,a22,a23,a24],[a31,a32,a33,a34],[a41,a42,a43,a44]]
+    # axis=0: out[x] = a(i+1)x + a(i)x
+    # axis=1: out[x] = ax(i+1) + ax(i)
+    # y = [[[a111,a112],[a121,a122]],[[a211,a212],[a221,a222]],[[a311,a312],[a321,a322]]]
+    # axis=2: out[x] = axy(i+1) + axy(i)
     add = myPoints.sum(1)
+    print("add:"+str(add))
     myPointsNew[0] = myPoints[np.argmin(add)]
     myPointsNew[3] = myPoints[np.argmax(add)]
+    # axis=0：在第一维操作
+    # axis=1：在第二维操作
+    # axis=-1：在最后一维操作
+    # axis=i：在第i维操作
+    # x = [[a11,a12,a13,a14],[a21,a22,a23,a24],[a31,a32,a33,a34],[a41,a42,a43,a44]]
+    # axis=0: out[x] = a(i+1)x - a(i)x
+    # axis=1: out[x] = ax(i+1) - ax(i)
+    # y = [[[a111,a112],[a121,a122]],[[a211,a212],[a221,a222]],[[a311,a312],[a321,a322]]]
+    # axis=2: out[x] = axy(i+1) - axy(i)
     diff = np.diff(myPoints, axis=1)
+    print("diff:"+str(diff))
     myPointsNew[1] = myPoints[np.argmin(diff)]
     myPointsNew[2] = myPoints[np.argmax(diff)]
 
@@ -88,9 +115,23 @@ def recorder(myPoints):
 #
 def warpImg(img, pionts, w, h, pad=20):
     pionts = recorder(pionts)
+    print("pionts:"+str(pionts))
     pts1 = np.float32(pionts)
+    print("pts1:"+str(pts1))
     pts2 = np.float32([[0, 0], [w, 0], [0, h], [w, h]])
+    # 透视变换是将成像投影到一个新的视平面(Viewing Plane)，也称作投影映射(Projective Mapping)。通过透视变换ABC变换到A'B'C'
+    # cv2.getPerspectiveTransform(src, dst) → retval
+    # src：源图像中待测矩形的四点坐标
+    # sdt：目标图像中矩形的四点坐标
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
+    # 逆透视变换
+    # cv2.warpPerspective(src, M, dsize[, dst[, flags[, borderMode[, borderValue]]]]) → dst
+    # src：输入图像;
+    # M：变换矩阵;
+    # dsize：目标图像shape;
+    # flags：插值方式，interpolation方法INTER_LINEAR或INTER_NEAREST;
+    # borderMode：边界补偿方式，BORDER_CONSTANT or BORDER_REPLICATE;
+    # borderValue：边界补偿大小，常值，默认为0
     imgWarp = cv2.warpPerspective(img, matrix, (w, h))
 
     # 填充
