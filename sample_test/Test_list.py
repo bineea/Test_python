@@ -5,10 +5,10 @@ import numpy as np
 
 x = [[1,2,3,4],[4,3,2,1],[1,4,7,9],[2,6,5,8]]
 diff_x_0 = np.diff(x, n=1, axis=0)
-print("diff_x_0:"+str(diff_x_0))
+print("按照第1维度求取差值diff_x_0:"+str(diff_x_0))
 
 diff_x_1 = np.diff(x, n=1, axis=1)
-print("diff_x_1:"+str(diff_x_1))
+print("按照第2维度求取差值diff_x_1:"+str(diff_x_1))
 
 diff_x_2 = np.diff(x, n=2, axis=1)
 print("diff_2:"+str(diff_x_2))
@@ -17,7 +17,7 @@ print("diff_2:"+str(diff_x_2))
 # axis=2: out[x] = axy(i+1) - axy(i)
 y = [[[1,2],[3,4]],[[4,3],[2,1]],[[1,4],[7,9]],[[2,6],[5,8]]]
 diff_y_2 = np.diff(y, n=1, axis=2)
-print("diff_y_2:"+str(diff_y_2))
+print("按照第3维度求取差值diff_y_2:"+str(diff_y_2))
 #
 # diff_y_2 = np.diff(y, n=1, axis=1)
 # print("diff_2:"+str(diff_y_2))

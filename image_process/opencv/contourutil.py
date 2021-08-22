@@ -135,7 +135,9 @@ def warpImg(img, pionts, w, h, pad=20):
     imgWarp = cv2.warpPerspective(img, matrix, (w, h))
 
     # 填充
-    # shape读取矩阵结构信息
+    # img.shape[0]：图像的垂直尺寸（高度）
+    # img.shape[1]：图像的水平尺寸（宽度）
+    # img.shape[2]：图像的通道数
     imgWarp = imgWarp[pad: imgWarp.shape[0] - pad, pad: imgWarp.shape[1] - pad]
 
     return imgWarp
