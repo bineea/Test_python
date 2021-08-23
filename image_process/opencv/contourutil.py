@@ -134,12 +134,11 @@ def warpImg(img, pionts, w, h, pad=20):
     # borderValue：边界补偿大小，常值，默认为0
     imgWarp = cv2.warpPerspective(img, matrix, (w, h))
 
-    # 填充
+    # 列表数据分片操作，移除边缘空隙
     # img.shape[0]：图像的垂直尺寸（高度）
     # img.shape[1]：图像的水平尺寸（宽度）
     # img.shape[2]：图像的通道数
-    
-    # 简单来说截取二维矩阵imgWarp符合要求的范围内的元素
+    # L[i:j] 一维矩阵分片操作，获取i到j处的元素（Li~Lj-1）==[i,j)
     imgWarp = imgWarp[pad: imgWarp.shape[0] - pad, pad: imgWarp.shape[1] - pad]
 
     return imgWarp

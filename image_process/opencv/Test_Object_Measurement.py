@@ -22,7 +22,7 @@ cap.set(10,160)
 cap.set(3,1920)
 cap.set(4,1080)
 
-scale = 3
+scale = 2
 
 width_paper = 210 * scale
 heigh_paper = 290 * scale
