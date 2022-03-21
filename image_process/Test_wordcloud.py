@@ -30,8 +30,24 @@ stopwords = set(STOPWORDS)
 stopwords.add("int")
 stopwords.add("ext")
 
-wc = WordCloud(max_words=1000, mask=mask, stopwords=stopwords, margin=1,background_color='black',
-               random_state=1).generate(text)
+wc = WordCloud(
+    # 要显示的单词的最大个数
+    max_words=10000,
+    # 背景图片
+    mask=mask,
+    # 排除的单词集
+    stopwords=stopwords,
+    # 单词外边距
+    margin=0,
+    # 背景颜色
+    background_color='white',
+    # 配色方案数量
+    random_state=50,
+    # 最小的字体大小
+    min_font_size=1
+    # 若是有中文的话，这句代码必须添加，不然会出现方框，不出现汉字
+    # font_path='C:\Windows\Fonts\STZHONGS.TTF'
+    ).generate(text)
 # store default colored image
 default_colors = wc.to_array()
 plt.title("Custom colors")
